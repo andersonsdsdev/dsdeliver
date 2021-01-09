@@ -1,44 +1,44 @@
-import { format } from 'path';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import StepsHeader from './StepsHeader';
+
 import { Product } from './types';
+import { formatPrice } from './helpers';
 
 type Props = {
-    product: Product;
-}
+  product: Product;
+  onSelectProduct: (product: Product) => void;
+  isSelected: boolean;
+};
 
-function formatPrice(price: number) {
-    const fromatter = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BLR',
-        minimumFractionDigits: 2
-    })
+function ProductCard({ product, onSelectProduct, isSelected } : Props) {
 
-    return fromatter.format(price)
-}
+  return (
+    <div 
+      className={`order-card-container ${isSelected ? 'selected' : ''}`}
+      onClick={() => onSelectProduct(product)}
+    >
+      <h3 className="order-card-title">
+        {product.name}
+      </h3>
 
-function ProductCard({ product }: Props) {
-    return (
-        <div className="order-card-container">
-            <h3 className="order-card-title">
-                {product.name}
-            </h3>
-            <img 
-                src={product.imageUri}
-                className="order-card-image"
-                alt={product.name} 
-            />
-            <h3 className="order-card-price">
-                {formatPrice(product.price)}
-            </h3>
-            <div className="order-card-description">
-                <h3>
-                    Descrição
-                </h3>
-                <p>
-                    {product.description}
-                </p>
-            </div>
-        </div>
-    )
+      <img 
+        src={product.imageUri} 
+        className="order-card-image" 
+        alt={product.name}
+      />
+
+      <h3 className="order-card-price">
+        {formatPrice(product.price)}
+      </h3>
+
+      <div className="order-card-description">
+        <h3>Descrição</h3>
+        <p>{product.description}</p>
+      </div>
+    </div>
+  );
 }
 
 export default ProductCard;
